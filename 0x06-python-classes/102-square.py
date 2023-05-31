@@ -1,53 +1,104 @@
 #!/usr/bin/python3
+
+"""This module defines a Square class"""
+
+
 class Square:
-    """ A class that defines a square by its size
     """
-    def __eq__(self, other):
-        return self.__size == other.__size
+    Class that defines a square
 
-    def __lt__(self, other):
-        return self.__size < other.__size
-
-    def __le__(self, other):
-        return self.__size <= other.__size
-
-    def __ne__(self, other):
-        return self.__size != other.__size
-
-    def __gt__(self, other):
-        return self.__size > other.__size
-
-    def __ge__(self, other):
-        return self.__size >= other.__size
+    Attributes:
+        size (int): size of the square
+    """
 
     def __init__(self, size=0):
-        """ Method to initialize the square object
         """
-        if not isinstance(size, int):
-            raise TypeError("size must be an integer")
-        elif size < 0:
-            raise ValueError("size must be >= 0")
-        else:
-            self.__size = size
-
-    def area(self):
-        """ Method that returns the square are of the object
+        Init method is a constructor for Square class
+        Args:
+            size: size of the square
         """
-        return (self.__size ** 2)
+        self.__size = size
 
     @property
     def size(self):
-        """ Method to returns the size value
+        """
+        Public instance method that returns the current square size
         """
         return self.__size
 
     @size.setter
     def size(self, value):
-        """ Method to set the size value of the square object
         """
-        if not isinstance(value, int):
+        Public instance method that returns the current square size
+        Args:
+            value: size of the square
+
+        Returns:
+            TypeError: if size is not an integer
+            ValueError: if size is less than 0
+        """
+        if isinstance(value, int) is False:
             raise TypeError("size must be an integer")
-        elif value < 0:
+        if value < 0:
             raise ValueError("size must be >= 0")
-        else:
-            self.__size = value
+        self.__size = value
+
+    def area(self):
+        """
+        Public instance method that returns the current square area
+        """
+        return self.__size ** 2
+
+    def __eq__(self, other):
+        """
+        Method that overrides the equality operator
+        """
+        return self.area() == other.area()
+
+    def __ne__(self, other):
+        """
+        Method that overrides the inequality operator
+        """
+        return self.area() != other.area()
+
+    def __lt__(self, other):
+        """
+        Method that overrides the less than operator
+        """
+        return self.area() < other.area()
+
+    def __le__(self, other):
+        """
+        Method that overrides the less than or equal to operator
+        """
+        return self.area() <= other.area()
+
+    def __gt__(self, other):
+        """
+        Method that overrides the greater than operator
+        """
+        return self.area() > other.area()
+
+    def __ge__(self, other):
+        """
+        Method that overrides the greater than or equal to operator
+        """
+        return self.area() >= other.area()
+
+
+if "__main__" == __name__:
+    s_5 = Square(5)
+    s_6 = Square(6)
+
+    if s_5 < s_6:
+        print("Square 5 < Square 6")
+    if s_5 <= s_6:
+        print("Square 5 <= Square 6")
+    if s_5 == s_6:
+        print("Square 5 == Square 6")
+    if s_5 != s_6:
+        print("Square 5 != Square 6")
+    if s_5 > s_6:
+        print("Square 5 > Square 6")
+    if s_5 >= s_6:
+        print("Square 5 >= Square 6")
