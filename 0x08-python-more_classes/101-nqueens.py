@@ -1,107 +1,117 @@
 #!/usr/bin/python3
-"""
-
-This module contains an algorithm that resolves the N-Queen puzzle
-using backtracking
 
 """
+File: 101-nqueens.py
+Desc: The program in this module solves the N queens problem.
+
+"""
+import sys
 
 
-def isSafe(m_queen, nqueen):
-    """ Method that determines if the queens can or can't kill each other
-
-    Args:
-        m_queen: array that has the queens positions
-        nqueen: queen number
-
-    Returns:
-        True: when queens can't kill each other
-        False: when some of the queens can kill
-
+def init_board(n):
     """
-
-    for i in range(nqueen):
-
-        if m_queen[i] == m_queen[nqueen]:
-            return False
-
-        if abs(m_queen[i] - m_queen[nqueen]) == abs(i - nqueen):
-            return False
-
-    return True
-
-
-def print_result(m_queen, nqueen):
-    """ Method that prints the list with the Queens positions
-
-    Args:
-        m_queen: array that has the queens positions
-        nqueen: queen number
-
+    Initialize an `n`x`n` sized chessboard with 0's.
     """
-
-    res = []
-
-    for i in range(nqueen):
-        res.append([i, m_queen[i]])
-
-    print(res)
+    board = []
+    [board.append([]) for i in range(n)]
+    [row.append(' ') for i in range(n) for row in board]
+    return (board)
 
 
-def Queen(m_queen, nqueen):
-    """ Recursive function that executes the Backtracking algorithm
-
-    Args:
-        m_queen: array that has the queens positions
-        nqueen: queen number
-
+def board_deepcopy(board):
     """
-
-    if nqueen is len(m_queen):
-        print_result(m_queen, nqueen)
-        return
-
-    m_queen[nqueen] = -1
-
-    while((m_queen[nqueen] < len(m_queen) - 1)):
-
-        m_queen[nqueen] += 1
-
-        if isSafe(m_queen, nqueen) is True:
-
-            if nqueen is not len(m_queen):
-                Queen(m_queen, nqueen + 1)
-
-
-def solveNQueen(size):
-    """ Function that invokes the Backtracking algorithm
-
-    Args:
-        size: size of the chessboard
-
+    Return a deepcopy of a chessboard.
     """
+    if isinstance(board, list):
+        return list(map(board_deepcopy, board))
+    return (board)
 
-    m_queen = [-1 for i in range(size)]
 
-    Queen(m_queen, 0)
+def get_solution(board):
+    """
+    This function gets and retunrs the solution solved.
+    """
+    solution = []
+    for r in range(len(board)):
+        for c in range(len(board)):
+            if board[r][c] == "Q":
+                solution.append([r, c])
+                break
+    return (solution)
 
 
-if __name__ == '__main__':
+def xout(board, row, col):
+    """
+    X out spots on a chessboard.
+    """
+    for c in range(col + 1, len(board)):
+        board[row][c] = "x"
+    for c in range(col - 1, -1, -1):
+        board[row][c] = "x"
+    for r in range(row + 1, len(board)):
+        board[r][col] = "x"
+    for r in range(row - 1, -1, -1):
+        board[r][col] = "x"
+    c = col + 1
+    for r in range(row + 1, len(board)):
+        if c >= len(board):
+            break
+        board[r][c] = "x"
+        c += 1
+    c = col - 1
+    for r in range(row - 1, -1, -1):
+        if c < 0:
+            break
+        board[r][c]
+        c -= 1
+    c = col + 1
+    for r in range(row - 1, -1, -1):
+        if c >= len(board):
+            break
+        board[r][c] = "x"
+        c += 1
+    c = col - 1
+    for r in range(row + 1, len(board)):
+        if c < 0:
+            break
+        board[r][c] = "x"
+        c -= 1
 
-    import sys
 
-    if len(sys.argv) == 1 or len(sys.argv) > 2:
+def recursive_solve(board, row, queens, solutions):
+    """
+    Recursively solve an N-queens puzzle
+    """
+    if queens == len(board):
+        solutions.append(get_solution(board))
+        return (solutions)
+
+    for c in range(len(board)):
+        if board[row][c] == " ":
+            tmp_board = board_deepcopy(board)
+            tmp_board[row][c] = "Q"
+            xout(tmp_board, row, c)
+            solutions = recursive_solve(tmp_board, row + 1,
+                                        queens + 1, solutions)
+
+    return (solutions)
+
+
+if __name__ == "__main__":
+    """
+    Program execution starts here.
+    """
+    if len(sys.argv) != 2:
         print("Usage: nqueens N")
         sys.exit(1)
-
-    try:
-        size = int(sys.argv[1])
-    except:
+    if sys.argv[1].isdigit() is False:
         print("N must be a number")
         sys.exit(1)
-
-    if size < 4:
+    if int(sys.argv[1]) < 4:
         print("N must be at least 4")
         sys.exit(1)
 
-    solveNQueen(size)
+    board = init_board(int(sys.argv[1]))
+    solutions = recursive_solve(board, 0, 0, [])
+    for sol in solutions:
+        print(sol)
