@@ -1,23 +1,21 @@
 #!/usr/bin/python3
 """
-Define a function that prints n lines of a text file.
+Define a function to append a string at the end of a text file.
 """
 
 
-def read_lines(filename="", nb_lines=0):
+def append_write(filename="", text=""):
     """
-    Read n lines from a text file and print them to stdout.
+    Append a string at the end of a text file.
 
     Args:
-        filename (str): name of the text file.
-        nb_lines (int): number of lines to read, by default is zero.
+       filename (str): name of the text file
+       text (str): String to append.
+
     Return:
-        nothing.
+       nb_appended (int): number of bytes appended.
     """
     if filename:
-        with open(filename, mode='r', encoding='utf-8') as data:
-            if nb_lines <= 0:
-                print(data.read(), end='')
-            else:
-                for _ in range(nb_lines):
-                    print(data.readline(), end='')
+        with open(filename, mode='a', encoding='utf-8') as data:
+            nb_appended = data.write(text)
+        return nb_appended

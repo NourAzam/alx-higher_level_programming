@@ -1,22 +1,20 @@
 #!/usr/bin/python3
 """
-Define a function to count the number of lines of a file.
+Define a function that writes to text file.
 """
 
 
-def number_of_lines(filename=""):
+def write_file(filename="", text=""):
     """
-    Count the number of lines of a file.
+    Write a string to text file.
 
     Args:
-       filename (str): file name.
-
+       filename (str): text file to write the string, if it doesn't exist, will
+       be created.
     Return:
-       number_lines (int): number of lines of filename.
+       nb_written (int): number of bytes written in the text file.
     """
-    number_lines = 0
     if filename:
-        with open(filename, mode='r', encoding='utf-8') as data:
-            for _ in data:
-                number_lines += 1
-        return number_lines
+        with open(filename, mode='w', encoding='utf-8') as data:
+            nb_written = data.write(text)
+        return nb_written
